@@ -1,0 +1,68 @@
+{% extends 'properties/base.html' %}
+
+{% block title %}Property Form{% endblock %}
+
+{% block header %}{{ form.instance.pk|yesno:"Update Property,Create Property" }}{% endblock %}
+
+{% block content %}
+<form @submit.prevent="submitForm">
+    <input type="text" name="name" x-model="form.name" placeholder="Name">
+    <input type="text" name="address" x-model="form.address" placeholder="Address">
+    <input type="text" name="country" x-model="form.country" placeholder="Country">
+    <input type="text" name="city" x-model="form.city" placeholder="City">
+    <input type="text" name="postal_code" x-model="form.postal_code" placeholder="Postal Code">
+    <input type="text" name="property_type" x-model="form.property_type" placeholder="Property Type">
+    <input type="text" name="surface" x-model="form.surface" placeholder="Surface">
+    <button type="submit">Save</button>
+</form>
+<script>
+    function propertyForm() {
+        return {
+            form: {
+                name: '',
+                address: '',
+                country: '',
+                city: '',
+                postal_code: '',
+                property_type: '',
+                surface: ''
+            },
+            title: 'Create Property',
+            isUpdate: false,
+            submitForm() {
+                let url = '/api/properties/';
+                let method = 'POST';
+                if (this.isUpdate) {
+                    const pk = window.location.pathname.split('/').filter(Boolean).pop();
+                    url += `${pk}/`;
+                    method = 'PUT';
+                }
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.form)
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.href = '/';
+                    } else {
+                        alert('Failed to save property');
+                    }
+                });
+            },
+            init() {
+                const pk = window.location.pathname.split('/').filter(Boolean).pop();
+                if (pk !== 'create') {
+                    this.title = 'Update Property';
+                    this.isUpdate = true;
+                    fetch(`/api/properties/${pk}/`).then(response => response.json()).then(data => {
+                        this.form = data;
+                    });
+                }
+            }
+        }
+    }
+</script>
+<div x-data="propertyForm()" x-init="init()"></div>
+{% endblock %}

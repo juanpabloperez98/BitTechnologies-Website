@@ -1,0 +1,14 @@
+{% extends 'properties/base.html' %}
+
+{% block title %}Confirm Delete{% endblock %}
+
+{% block header %}Confirm Delete Property{% endblock %}
+
+{% block content %}
+<p>Are you sure you want to delete "{{ property.name }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Confirm">
+    <a href="{% url 'property-list' %}">Cancel</a>
+</form>
+{% endblock %}

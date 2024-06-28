@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Properties List{% endblock %}
+
+{% block header %}Properties{% endblock %}
+
+{% block content %}
+<div>
+    <a href="{% url 'property-create' %}" class="btn btn-primary">Add New Property</a>
+</div>
+<div>
+    <input type="text" x-model="search" placeholder="Search...">
+    <button @click="filterProperties">Filter</button>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Postal Code</th>
+            <th>Property Type</th>
+            <th>Surface</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <template x-for="property in filteredProperties" :key="property.id">
+            <tr>
+                <td x-text="property.name"></td>
+                <td x-text="property.address"></td>
+                <td x-text="property.country"></td>
+                <td x-text="property.city"></td>
+                <td x-text="property.postal_code"></td>
+                <td x-text="property.property_type"></td>
+                <td x-text="property.surface"></td>
+                <td>
+                    <a :href="'/update/' + property.id">Edit</a>
+                    <button @click="deleteProperty(property.id)">Delete</button>
+                </td>
+            </tr>
+        </template>
+    </tbody>
+</table>
+<script>
+    function properties() {
+        return {
+            properties: [],
+            search: '',
+            async fetchProperties() {
+                const response = await fetch('/api/properties/');
+                const data = await response.json();
+                this.properties = data;
+            },
+            get filteredProperties() {
+                if (this.search === '') {
+                    return this.properties;
+                }
+                return this.properties.filter(property => {
+                    return property.name.toLowerCase().includes(this.search.toLowerCase()) ||
+                           property.city.toLowerCase().includes(this.search.toLowerCase()) ||
+                           property.country.toLowerCase().includes(this.search.toLowerCase());
+                });
+            },
+            deleteProperty(id) {
+                if (confirm('Are you sure you want to delete this property?')) {
+                    fetch(`/api/properties/${id}/`, {
+                        method: 'DELETE'
+                    }).then(response => {
+                        if (response.ok) {
+                            this.fetchProperties();
+                        } else {
+                            alert('Failed to delete property');
+                        }
+                    });
+                }
+            },
+            init() {
+                this.fetchProperties();
+            }
+        }
+    }
+</script>
+<div x-data="properties()" x-init="init()"></div>
+{% endblock %}
