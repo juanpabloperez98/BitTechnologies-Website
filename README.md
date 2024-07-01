@@ -21,35 +21,31 @@ cd property_management
 Running with enviroment local
 To run the project using enviroment local, follow these steps:
 
-Create a database named property_db.
+1) create a database in your local postgres with the name of your choice
 
-Set the user and password in property_management/settings.py:
-
-```
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'property_db',
-        'USER': 'your_user',  # Change according to your local configuration
-        'PASSWORD': 'your_password',  # Change according to your local configuration
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-```
-
-Virtual environment configuration (optional but recommended) WINDOWS:
+2) Virtual environment configuration (optional but recommended) WINDOWS:
 ```
 python -m venv env
 env\Scripts\activate
 ```
-
-Install dependencies:
+3) Install dependencies:
 ```
 pip install -r requirements.txt
 ```
+4) Copy the .env file provided by the project developer (Juan Pablo Perez) to the level of the manage.py file. It contains the environment variables.
+The structure would be
+```
+DATABASE_NAME=<database_name>
+DATABASE_USER=<database_user>
+DATABASE_PASSWORD=<database_password>
+DATABASE_HOST=<database_host>
+DATABASE_PORT=<database_port>
+DEBUG=<1 or 0>
+DJANGO_SETTINGS_MODULE=property_management.settings
+IS_DOCKER=<bool is run with docker>
+```
 
-Apply migrations
+5) Apply migrations
 ```
 python manage.py migrate
 ```
@@ -58,7 +54,19 @@ python manage.py migrate
 
 Running with Docker Compose, to run the project using Docker Compose, follow these steps:
 
-Build and Start Containers:
+1) Copy the .env file provided by the project developer (Juan Pablo Perez) to the level of the manage.py file. It contains the environment variables.
+The structure would be
+```
+DATABASE_NAME=<database_name>
+DATABASE_USER=<database_user>
+DATABASE_PASSWORD=<database_password>
+DATABASE_HOST=<database_host>
+DATABASE_PORT=<database_port>
+DEBUG=<1 or 0>
+DJANGO_SETTINGS_MODULE=property_management.settings
+IS_DOCKER=<bool is run with docker>
+```
+2) Build and Start Containers:
 
 ```
 docker-compose up --build
