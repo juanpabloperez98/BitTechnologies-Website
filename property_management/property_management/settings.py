@@ -17,6 +17,17 @@ import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialize environment variables
+env = environ.Env(
+    DEBUG=(bool, False),
+    IS_DOCKER=(bool, False)
+)
+
+# Reading .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+IS_DOCKER = env.bool('IS_DOCKER', default=False)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -24,9 +35,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@j8k9+-l+$hawlg@2vo98wf=n#n%%&n#$hgw5*3-7)6b!ol9(-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = [
+    'localhost', 
+    '127.0.0.1', 
+    '[::1]',
+    'bittecnologie_web'
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://bittecnologie_web:8000'
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -38,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'api',
     'webTemplates',
@@ -51,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'property_management.urls'
@@ -77,16 +103,15 @@ WSGI_APPLICATION = 'property_management.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'property_db',
-        'USER': 'postgres',
-        # 'PASSWORD': 'Juanpablo7823',
-        'PASSWORD': 'bittecnologies123',
-        'HOST': 'db',
-        # 'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
     }
 }
 
