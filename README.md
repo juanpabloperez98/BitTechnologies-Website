@@ -70,4 +70,8 @@ Access the Application
 
 Once all containers are up and running, the application will be available at http://localhost:8000/.
 
+## Postman Collection
+
+The BitTechnologies-Website.postman_collection.json file contains the examples in postman to import and test the API.
+
 
