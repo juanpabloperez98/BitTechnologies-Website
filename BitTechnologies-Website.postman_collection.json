@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "084bcb0a-73fc-4f2d-b969-c4250155e36b",
+		"name": "BitTechnologies-Website",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21638732",
+		"_collection_link": "https://shootworkspace.postman.co/workspace/Main-Workspace~e03a587f-1284-4c52-8ecb-c75aa23402bd/collection/21638732-084bcb0a-73fc-4f2d-b969-c4250155e36b?action=share&source=collection_link&creator=21638732"
+	},
+	"item": [
+		{
+			"name": "CreateProperty",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Spacious Villa2\",\r\n    \"address\": \"3456 Cedar Lanef\",\r\n    \"country\": \"Colombia\",\r\n    \"city\": \"Pereira\",\r\n    \"postal_code\": \"2034567\",\r\n    \"property_type\": \"apartment\",\r\n    \"surface\": \"4000.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/create/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"create",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPropertys",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/list/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"list",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DetailProperty",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/get/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mountain Chalet\",\r\n    \"address\": \"2627 Alpine Road\",\r\n    \"country\": \"Switzerland\",\r\n    \"city\": \"Zurich\",\r\n    \"postal_code\": \"8001\",\r\n    \"property_type\": \"apartment\",\r\n    \"surface\": \"3200\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/update/2/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/delete/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"delete",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
