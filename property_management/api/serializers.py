@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from properties.models import Property
+from api.models import Property
 
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:

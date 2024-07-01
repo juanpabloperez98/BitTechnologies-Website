@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Property Form{% endblock %}
+
+{% block header %}{{ form.instance.pk|yesno:"Update Property,Create Property" }}{% endblock %}
+
+{% block content %}
+<form id="property-form">
+    <input type="text" name="name" id="name" placeholder="Name">
+    <input type="text" name="address" id="address" placeholder="Address">
+    <input type="text" name="country" id="country" placeholder="Country">
+    <input type="text" name="city" id="city" placeholder="City">
+    <input type="text" name="postal_code" id="postal_code" placeholder="Postal Code">
+    <select name="property_type" id="property_type">
+        {% for value, display in form.fields.property_type.choices %}
+            <option value="{{ value }}">{{ display }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="surface" id="surface" placeholder="Surface">
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+    const baseURL = 'http://127.0.0.1:8000';
+
+    $(document).ready(function() {
+        function getFormData() {
+            return {
+                name: $('#name').val(),
+                address: $('#address').val(),
+                country: $('#country').val(),
+                city: $('#city').val(),
+                postal_code: $('#postal_code').val(),
+                property_type: $('#property_type').val(),
+                surface: $('#surface').val()
+            };
+        }
+
+        function populateForm(data) {
+            $('#name').val(data.name);
+            $('#address').val(data.address);
+            $('#country').val(data.country);
+            $('#city').val(data.city);
+            $('#postal_code').val(data.postal_code);
+            $('#property_type').val(data.property_type);
+            $('#surface').val(data.surface);
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            let formData = getFormData();
+            let url = `${baseURL}/api/create/`;
+            let method = 'POST';
+
+            const pk = window.location.pathname.split('/').filter(Boolean).pop();
+            if (pk !== 'create') {
+                url = `${baseURL}/api/update/${pk}/`;
+                method = 'PUT';
+            }
+
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function() {
+                    window.location.href = '/';
+                },
+                error: function() {
+                    alert('Failed to save property');
+                }
+            });
+        }
+
+        $('#property-form').on('submit', submitForm);
+
+        const pk = window.location.pathname.split('/').filter(Boolean).pop();
+        if (pk !== 'create') {
+            $.ajax({
+                url: `${baseURL}/api/get/${pk}/`,
+                method: 'GET',
+                success: function(data) {
+                    populateForm(data);
+                },
+                error: function() {
+                    alert('Failed to load property data');
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

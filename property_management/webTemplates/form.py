@@ -1,5 +1,5 @@
 from django import forms
-from .models import Property
+from api.models import Property
 
 class PropertyForm(forms.ModelForm):
     class Meta:
