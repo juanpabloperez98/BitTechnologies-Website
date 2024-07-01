@@ -8,19 +8,19 @@ ENV PYTHONUNBUFFERED 1
 # Directorio de trabajo en el contenedor
 WORKDIR /code
 
-# Instalar dependencias del sistema
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
 # Instalar dependencias de Python
 COPY requirements.txt /code/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copiar el código de la aplicación
 COPY . /code/
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Puerto en el que se ejecutará la aplicación Django
 EXPOSE 8000
